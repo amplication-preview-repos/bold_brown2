@@ -1,0 +1,36 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Status {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  modsItems   Mods[]
+  name        String?
+  updatedAt   DateTime @updatedAt
+}
+
+model Mods {
+  createdAt   DateTime @default(now())
+  description String?
+  id          String   @id @default(cuid())
+  name        String?
+  status      Status?  @relation(fields: [statusId], references: [id])
+  statusId    String?
+  updatedAt   DateTime @updatedAt
+}
+
+model Settings {
+  createdAt           DateTime @default(now())
+  defaultZoomLevel    Int?
+  id                  String   @id @default(cuid())
+  qrCodeReaderEnabled Boolean?
+  theme               String?
+  updatedAt           DateTime @updatedAt
+}
